@@ -1,0 +1,16 @@
+---
+title: "Informe Laboratorio 1"
+author: "Nombre del Equipo"
+date: "Fecha del labotorio"
+output: 
+  html_document:
+    highlight: tango
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("dplyr")
+library("ggplot2")
+```
+

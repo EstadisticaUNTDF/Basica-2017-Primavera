@@ -1,0 +1,484 @@
+﻿---
+title: "Laboratorio 1 - Introducción a R y RStudio"
+output:
+  html_document:
+    css: ../lab.css
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+bibliography: intro-r.bib
+nocite: | 
+  @Estadisticas2001, @Estadisticas2002, @Estadisticas2003, @Estadisticas2004,
+  @Estadisticas2005, @Estadisticas2006, @Estadisticas2007, @Estadisticas2008,
+  @Estadisticas2009, @Estadisticas2010, @Estadisticas2011, @Estadisticas2012,
+  @Estadisticas2013, @Estadisticas2014, @Estadisticas2015
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+library(dplyr)
+library(ggplot2)
+library(skimr)
+```
+
+El objetivo de este laboratorio es introducirlos al uso de **R** y
+**RStudio.** 
+Para aclarar que es cada cosa. **R** es el programa estadístico que
+realiza todos los cálculos, operaciones, gráficos, etc. **RStudio** es
+una interfaz a **R**, hace que trabajar con R sea más amigable. Sin esa
+interfaz lo único que veríamos es la consola, pura y dura.
+
+Para convertirse en un buen analista de datos (algo que cualquier 
+científico debe saber hacer) es conveniente que a medida que progresen
+en los laboratorios exploren por su cuenta que se puede hacer; así aprenderán
+mejor. Antes de llegar a este punto es necesario que tenga cierta fluidez y 
+conceptos básicos. Este es el objetivo de este laboratorio.
+
+Para empezar, deberán loguearse en RStudio. [agregar link]
+
+[agregar screenshot]
+
+La interfaz de RStudio está dividida en varios paneles, y cada uno tiene
+varias pestañas. Arriba a la derecha está el *espacio de trabajo*
+(*Environment*), es donde van a aparecer los objetos que creen a medida
+que trabajan en R. La otra pestaña es el *historial* (*History* ), 
+donde quedan guardados todos los comandos que hayan ejecutado. Abajo de
+estos dos hay un panel con varias pestañas. *Archivos* (*Files*), muestra
+los archivos. *Gráficos* (*Plots*) es donde van a aparecer los gráficos
+que vayamos haciendo. *Paquetes* (*Packages*) muestra las librerías que
+tenemos y sus paquetes instalados y con una tilde los cargados (más
+adelante vamos a ver que son los paquetes). La *ayuda* (*Help*) es donde
+vamos a poder la ayuda de funciones de **R**.  Y además está la pestaña 
+del *Visor* (*Viewer*) que nos muestra una vista de los documentos que
+creemos.
+
+Por el lado izquierdo está la *consola*, es donde pasa toda la acción.
+Todo lo que hagamos va a ser escrito como un orden o comando ahí y luego
+vamos a ver el resultado ahí o si es un gráfico en el panel de gráficos.
+Cada vez que iniciemos RStudio va a mostrar la consola con un mensaje que
+indica la versión de R y otros detalles. Debajo de ese mensaje está el
+*prompt*. Aquí es donde R espera que se ingresen los comandos. Y para
+interactuar con R hay que decirle que tiene que hacer. Los comandos y
+su sintaxis ha evolucionado a lo largo de décadas y ahora proveen a los
+usuarios una manera natural de acceder y procesar datos, aplicar
+procedimientos estadísticos, etc.
+
+## Creando un reporte de laboratorio reproducible
+
+Vamos a usar el lenguaje *markdown*, específicamente *R Markdown* para crear
+un reporte de laboratorio reproducible. Este lenguaje permite mezclar texto
+con comandos de R de manera que si alguna otra persona ve ese archivo pueda
+reproducir sus resultados desde cero. A esto se le llama que sea
+*reproducible*. Puede parecer mucho trabajo, pero créanme que en el corto plazo
+les ahorrará tiempo. Imaginen que descubren un error en sus datos, si lo
+hicieran todo a "mano" tendrían que volver a realizar todo el análisis otra
+vez. En cambio, si se han tomado el trabajo de hacerlo reproducible solo
+necesitan volver a ejecutar el documento y todos los análisis y gráficos 
+volverán a crearse con la información corregida.
+
+*Markdown* es un lenguaje de marcado liviano. Es comparable al código que
+genera las páginas web (HTML) pero más simple y puede leerse sin tanto código
+que moleste. En el menú *Help/Markdown Quick Reference* pueden ver una ficha
+rápida de cómo poner distintos formatos, títulos, listas, vínculos, imágenes,
+etc.
+
+Vamos a bajar una planilla de modelo de cómo hacer el reporte de laboratorio.
+Usa el siguiente código en la consola para bajar el archivo:
+
+```{r cargar-planilla}
+download.file("", destfile = "lab1.Rmd")
+```
+
+Ahora deberías ver un archivo que se llama **lab1.Rmd** en el panel de archivos
+(*Files*) abajo a la derecha en RStudio. Ábrelo. Nos vamos a referir a este 
+archivo como el archivo Rmarkdown, rmd o reporte de laboratorio. Todo lo que 
+hay que hacer para completar este laboratorio es completar brevemente la 
+preguntas e insertar el código de R cuando sea necesario. Al principio, están 
+marcados donde poner las respuestas y donde código. Más adelante será necesario
+que piensen que código deben insertar para responder las preguntas. Si 
+necesitan insertar más código lo pueden hacer haciendo clic en el botón verde
+con un + y una c que aparece arriba del panel del informe. Dice *Insert*, y 
+luego clic en *R*.
+
+Antes de seguir, completen el encabezado con el nombre del equipo, el "autor"
+del laboratorio de hoy y quienes "colaboran". Luego hagan clic en *knit*
+(tejer en inglés). Verán que les aparece una ventana con el documento que han
+creado.
+
+
+## Paquetes en R
+
+**R** es software de código abierto. Esto significa que cualquiera puede ver y
+modificar el código que lo hace funcionar. Además, tiene un sistema de
+paquetes que permite agregar nuevas funciones de manera modular. Para este
+laboratorio usaremos dos paquetes:
+
+ - `dplyr` para el manejo de datos
+ - `ggplot2` para los gráficos
+ 
+ Los paquetes ya han sido instalados en el servidor, pero es necesario
+ cargarlos para que funcionen. Cárguenlos escribiendo en la consola:
+ 
+```{r cargar-paquetes}
+library("dplyr")
+library("ggplot2")
+```
+
+Fíjense que estos comandos están escritos en el informe. Esto es porque los
+espacios de trabajo del documento y la consola trabajan por
+[separado][consola].
+
+A medida que avancemos en los laboratorios, vamos a tener que cargar los 
+paquetes relevantes para que todo funcione correctamente.
+
+[consola]: En verdad cada vez que *tejemos* el documento se crea una nueva 
+sesión completamente limpia. Por eso, es que es necesario especificar todos y
+cada uno de los comandos en documento.
+
+## Los datos: 
+
+El Dr. John Arbuthnot fue un médico, matemático y escritor del siglo XVII y XVIII.
+Estaba interesado en la razón de nacimientos de niños y niñas. Por este motivo,
+registró los bautismos de Londres entre 1629 y 1710.
+
+Para cargarlos debemos agregar esto en el documento:
+
+```{r cargar-datos}
+source("http://www.openintro.org/stat/data/arbuthnot.R")
+```
+
+Luego podemos ejecutarlo en la consola poniendo el cursor en la línea y
+presionando el botón *Run/Run Selected Line(s)* que se encuentra arriba a la
+derecha del panel de documento.
+
+Esta instrucción le indica a R que cargue los datos. En el panel del *espacio 
+de trabajo* les debería aparecer un nuevo objeto llamado `arbuthnot`. A medida
+que carguen datos o creen objetos nuevos como parte trabajo van a aparecer
+nuevos objetos. También es posible borrarlos de a uno o a varios con la 
+función `rm()`. 
+
+Vemos que nos indica que tiene 82 observaciones de 3 variables. Si hacemos 
+clic en el botón que aparece al lado del nombre del objeto nos muestra
+un resumen del mismo. Esto es lo mismo que poner:
+
+```{r str-objeto}
+str(arbuthnot)
+```
+
+Prueben hacerlo en su consola. Nos muestra los nombres de las columnas, el tipo
+de dato que contiene y los primeros datos.
+
+Podríamos ver todos los datos escribiendo el nombre del mismo en la consola
+
+```{r objeto}
+arbuthnot
+```
+
+No es muy práctico verlos así. Una ventaja de RStudio es que podemos ver los
+valores con el visor de datos. Haz clic en el nombre en el panel de *Environment*
+y deberías ver los datos. Con las barras de desplazamiento podemos ver todos los
+valores y cerrarlo haciendo clic en la cruz. 
+
+Son varias columnas, la primera con el año, luego el número de Varones
+seguido por el número de mujeres; ambos en millones. Además, nos muestra números
+secuenciales a la izquierda, estos números no 
+forman partes de los datos, pero son agregados por claridad; son los índices de
+fila. Podemos pensarlo como una planilla de cálculo, en **R** este tipo de
+objetos son llamados *data frame*.
+
+Podemos ver las dimensiones de nuestros datos:
+
+```{r dimensiones}
+dim(arbuthnot)
+```
+
+Deberíamos obtener `[1] 82 3`. Vamos a ver más adelante que es este `[1]`. El
+primer número corresponde al número de filas y el segundo al de columnas. Esto
+es así para cualquier objeto con dos dimensiones.
+
+También podemos ver cuáles son los nombres de las columnas con:
+
+```{r nombres}
+names(arbuthnot)
+```
+
+## Explorando los datos
+
+Podemos comprobar que todos los valores sean razonables usando una función 
+llamada `summary()`:
+
+```{r resumen-datos}
+summary(arbuthnot)
+```
+
+Nos da un resumen de cada columna. Si los datos son categóricos solo nos dirá
+cuantas veces se repite cada una como en el caso de la primera columna. Pero
+si los datos son numéricos nos dará las medidas de resumen. En orden como 
+aparecen: mínimo, primer cuartil, mediana, media, tercer cuartil y máximo.
+
+1. ¿Qué números dejan por debajo el 25%, 50% y 75% del número de Varones?
+
+Por otro lado, quizás estemos interesados en ver solo una columna. La podemos
+seleccionar usando el símbolo `$` de esta manera.
+
+```{r seleccion-vector}
+arbuthnot$Año
+```
+
+2. ¿Qué comando usarías para extraer los intervalos de pesos? ¡Pruébalo!
+(Escríbelo en el informe en un nuevo bloque y luego haz clic en **Knit** Ahora 
+la respuesta está escrita en tu informe ¡sin copiar ni pegar!)
+
+Fíjate que ahora **R** imprimió los datos de una forma diferente. Lo que está 
+mostrando es un vector, ya no es una tabla. Tiene la misma longitud que el 
+número de filas de la tabla. Además, **R** añadió números entre `[]`, estos
+números son los índices que veíamos antes en las filas. El número que sigue
+al `[1]` es el primer elemento del vector, luego el 2°, 3°, ... hasta que llega al
+salto de línea y muestra nuevamente el índice con el que sigue el vector. Si 
+mostrase el [24] significa que el número siguiente que se muestra el 24°.
+
+## Gráficos
+
+Se pueden hacer muchos tipos de gráficos con **R** y existen muchos paquetes
+para realizarlos además del básico (en `base`). Nosotros vamos a utilizar 
+`ggplot2` por su facilidad de uso y gran calidad de los gráficos sin mucha
+complicación. 
+
+Este paquete sigue una idea que se llama gramática de gráficos propuesta por
+Wilkinson en donde los gráficos pueden dividirse en cuatro partes:
+
+ - Los **datos** y como se **mapeo** (**`aes`**) estético esos datos a las 
+ diferentes atributos estéticos.
+ - Las formas geométricas (**`geom`**) que representan como se ven los datos
+ - Transformaciones estadísticas de los datos (**`stats`**) resumen los datos
+ de forma útil.
+ - Escalas a las que se mapean los datos (**`scale`**). Estas pueden ser 
+ escalas de color, forma, etc.
+ - Un sistema de coordenadas (**`coord`**), que describe como se proyectan
+ estos datos. Por defecto se usa el sistema cartesiano. Pero hay otros 
+ disponibles.
+ - Un sistema paneles (**`facet`**) que describe como dividir los datos en
+ distintos paneles
+ 
+ Adicionalmente a la gramática, se agrega un sistema de temas que permite 
+ modificar la totalidad de elementos que hacen al gráfico como fuentes, 
+ líneas de ejes, etc.
+ 
+ Podemos hacer un gráfico de la siguiente forma:
+ 
+```{r grafico-inicial}
+ggplot(data = arbuthnot, aes(x = Año, y = Varones)) +
+  geom_point()
+```
+
+Esto significa que `ggplot()` tome los datos del `data frame` nacidos, 
+que mapee las columnas `Año` en el eje las ordenadas y `Varones` en el eje de 
+abscisas. Luego especificamos con que geometría representar los datos, en este
+caso elegimos puntos (`geom_point()`).
+
+Para saber que otros argumentos puede tener estas funciones podemos usar la
+ayuda de **R**. Como es obligatorio que todas las funciones de los paquetes
+tengan una ayuda, siempre se puede aprender mucho leyendo. Por ejemplo,
+vean la ayuda de `geom_point()`
+
+```{r ayuda}
+?geom_point
+```
+
+3. ¿Hay alguna tendencia en el número de varones a lo largo de los años? 
+¿Cómo la describirías?
+
+¿Cómo podríamos graficar el total de población? Aprovechando que R es un 
+calculadora muy potente podríamos escribir:
+
+```{r total-1629}
+5218 + 4683
+```
+
+para obtener el total de población en el censo de 1895. Podríamos hacer esto 
+para cada año, pero hay una forma más rápida. Podemos sumar las columnas 
+
+```{r total-columnas}
+arbuthnot$Varones + arbuthnot$Mujeres
+```
+
+Nos va a dar 82 números con el total de población para cada año. Pueden elegir
+algunos y comprobar que están bien. Como es un vector solo nos muestra el
+índice y el número.
+
+Para poder graficarlo debemos guardar este vector. Lo más recomendable es 
+guardarlo con el resto de los datos.
+
+```{r total-columnas-arbuthnot}
+arbuthnot <- arbuthnot %>% 
+  mutate(Total = Varones + Mujeres)
+```
+
+¡Uh! Hay algo nuevo ahí. ¿Qué es ese símbolo `%>%`? Se llama operador de 
+"entubado" (*piping*). Lo que hace este símbolo es tomar la salida de la 
+izquierda y se la pasa a la función de la derecha. 
+
+<div id = "boxedtext">
+**Una aclaración sobre el entubado:** Podemos leer estas de la 
+siguiente manera:
+
+*"Toma el conjunto de datos de `arbuthnot` y **entúbalo** en la función `mutate()`.
+Usando `mutate()` crea una nueva variable `Total` que es la suma de las 
+variables `Varones` y `Mujeres`. Luego asigna el conjunto de datos resultante
+al objeto `arbuthnot`. Es decir que está sobrescribiendo el viejo objeto `arbuthnot`."*
+
+Esto es lo mismo que ir fila a fila e ir sumando los valores de cada columna y
+luego guardarlos en una nueva variable llamada `Total`.
+</div>
+
+Ahora podemos graficar el número total de población con el siguiente comando:
+
+```{r grafico-total-vs-año}
+ggplot(data = arbuthnot, aes(x = Año, y = Total)) +
+  geom_point()
+```
+
+También podemos calcular la razón de Varones a mujeres en 1895:
+
+```{r Varones-a-mujeres-1895}
+5218 / 4683
+```
+
+o podemos hacerlo en toda la columna con una sola expresión:
+
+```{r Varones-a-mujeres}
+arbuthnot <- arbuthnot %>% 
+  mutate(razon_Varones_a_mujeres = Varones / Mujeres)
+```
+
+Y también la proporción de Varones en el año 1895:
+
+```{r proporcion-Varones-1895}
+5218 / (5218 + 4683)
+```
+
+o podemos hacerlo para toda la columna:
+
+```{r}
+arbuthnot <- arbuthnot %>% 
+  mutate(proporcion_Varones = Varones / Total)
+```
+
+Noten que usamos la variable `Total` que creamos previamente.
+
+4. Ahora creen un gráfico de la proporción de Varones a lo largo del
+tiempo. ¿Qué es lo que ven?
+
+<div id = "boxedtext">
+**Tip: ** Si usan las flechas del teclado en la consola, pueden desplazarse por
+los comandos que ingresaron anteriormente, el historial de comandos. También
+pueden acceder a él a través de la pestaña historial. Esto les va a ahorrar
+mucho tipeo en el futuro.
+</div>
+
+Finalmente, además de las operaciones matemáticas como sumas y divisiones
+también sirve para realizar comparaciones mayor que, `>`, menor que, `<`, e
+igual que `==`. Por ejemplo, para ver si el número de Varones es mayor que el
+de mujeres en cada arbuthnot usamos la expresión:
+
+```{r Varones-mayor-que-mujeres}
+arbuthnot <- arbuthnot %>% 
+  mutate(mas_Varones = Varones > Mujeres)
+```
+
+Este comando crea una nueva columna en el conjunto de datos `arbuthnot` que 
+contiene valores de `TRUE` (Verdadero) o `FALSE` (Falso). La variable tiene
+valores verdaderos cuando ese año el número de Varones fue mayor al de mujeres
+y falso si no lo fue. Esta variable contiene un nuevo tipo de dato distinto al
+resto del conjunto. Todas las columnas de `arbuthnot` son númericas (el año, 
+Varones y mujeres). La nueva columna de `mas_Varones` es de tipo *logical* que
+solo contiene valores `TRUE` o `FALSE`. En general, analizar los datos requiere
+de utilizar varios tipos de datos. Por eso **R**, tiene la capacidad de 
+representarlos.
+
+***
+
+## Por su cuenta
+
+<div id = "oyo">
+
+En la páginas anteriores, recrearon algunas de los gráficos y análisis
+preliminar de los datos censales. Su tarea consiste en repetir estos pasos
+pero con los datos para los nacimientos en Argentina. Carguen 
+los datos con el siguiente comando:
+
+
+```{r cargar-datos-nacimientos}
+load(url(""))
+```
+
+Los datos están guardados en un data frame llamado `nacimientos`.
+The data are stored in a data frame called `present`.
+
+-   ¿Cuáles son los años incluidos en este conjunto de datos? ¿Qué dimensiones
+    tiene el data frame? ¿Cuáles son los nombres de las variables (columnas)?
+
+-   ¿Cómo se comparan estos números con los datos censales? ¿Están en una
+    escala similar?
+
+-   Hace un gráfico que muestre la proporción niños nacidos en el tiempo ¿Qué
+    ven?
+    
+    La observación de Arbuthnot sobre que nacen más niños que niñas ¿se mantiene
+    para Argentina? Incluye el gráfico en tu respuesta. *Pista:* Deberías poder
+    reusar el código del ejercicio anterior, solo reemplaza el nombre del
+    data frame.
+    
+-   ¿En que año hubo un mayor número de nacimientos en Argentina? *Pista:*
+    Primero calcula el total y guárdalo como una nueva variable. Luego, 
+    ordena en orden descendente basado en variable total. Pueden hacerlo 
+    interactivamente en el visor de datos cliqueando en las flechas al lado
+    del nombre de la variable. Para incluirlo el resultado ordenado en el 
+    reporte deberán usar dos funciones nuevas: `arrange()` (para ordenar).
+    Podemos organizar nuestros datos en orden decreciente con otra función:
+    `descr` (para orden decreciente). Un ejemplo abajo:
+
+```{r}
+nacimientos %>%
+  arrange(desc(total))
+```
+
+
+Estos datos vienen de reportes de la Dirección de Estadísticas de Información 
+de la Salud del Ministerio de Salud de la Nación. Si quieren más información
+vean [aquí](http://www.deis.msal.gov.ar/index.php/estadisticas-vitales/).
+</div>
+
+<div id="license">
+Esta guía es una adaptación de laboratorio de Andrew Bray and Mine &Ccedil;etinkaya-Rundel 
+de Open Intro y está distribuida bajo
+[Creative Commons Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0). 
+</div>
+
+
+* * *
+
+## Recursos para aprender R y trabajar en RStudio
+
+Esta fue una pequeña introducción a R y RStudio, pero vamos proveerles más
+funciones y una comprensión más completa del lenguaje a lo largo del
+cuatrimestre.
+
+En esta materia vamos a usar los paquetes `dplyr` para el manejo de datos y
+`ggplot2` para visualización de datos. Si están googleando código de R, 
+asegúrense de incluir estos paquetes en la búsqueda. Por ejemplo, en vez
+de googlear "diagrama de dispersión en R", 
+busca "diagrama de dispersión en R con ggplot2" 
+
+Estos machetes pueden ser útiles durante el cuatrimestre:
+
+- [RMarkdown](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-spanish.pdf)
+- [Manejo de datos](https://www.rstudio.com/wp-content/uploads/2015/03/data-wrangling-spanish.pdf)
+- [Visualización de datos](https://www.rstudio.com/wp-content/uploads/2016/12/ggplot2-cheatsheet-2.1-Spanish.pdf)
+
+Tengan en cuenta que el código de algunos de estos machetes puede ser muy
+avanzado, pero serán útiles de todas formas.
+
+* * *
+
+## Referencias

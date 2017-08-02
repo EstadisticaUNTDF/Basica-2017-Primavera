@@ -1,0 +1,64 @@
+---
+title: "Laboratorio 0 - Introducción"
+output:
+  html_document:
+    css: ../lab.css
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## RStudio
+
+La interfaz de RStudio está dividida en varios paneles, y cada uno tiene
+varias pestañas. Arriba a la derecha está el *espacio de trabajo*
+(*Environment*), es donde van a aparecer los objetos que creen a medida
+que trabajan en R. La otra pestaña es el *historial* (*History* ), 
+donde quedan guardados todos los comandos que hayan ejecutado. Abajo de
+estos dos hay un panel con varias pestañas. *Archivos* (*Files*), muestra
+los archivos. *Gráficos* (*Plots*) es donde van a aparecer los gráficos
+que vayamos haciendo. *Paquetes* (*Packages*) muestra las librerías que
+tenemos y sus paquetes instalados y con un tilde los cargados (más
+adelante vamos a ver que son los paquetes). La *ayuda* (*Help*) es donde
+vamos a poder la ayuda de funciones de **R**.  Y además está las pestaña 
+del *Visor* (*Viewer*) que nos muestra una vista de los documentos que
+creemos.
+
+Por el lado izquierdo está la *consola*, es donde pasa toda la acción.
+Todo lo que hagamos va a ser escrito como un orden o comando ahí y luego
+vamos a ver el resultado ahí o si es un gráfico en el panel de gráficos.
+Cada vez que iniciemos RStudio va a mostrar la consola con un mensaje que
+indica la versión de R y otros detalles. Debajo de ese mensaje está el
+*prompt*. Aquí es donde R espera que se ingresen los comandos. Y para
+interactuar con R hay que decirle que tiene que hacer. Los comandos y
+su sintaxis han evolucionado a lo largo de décadas y ahora proveen a los
+usuarios una manera natural de acceder y procesar datos, aplicar
+procedimientos estadísticos, etc.
+
+Se puede usar R como una calculadora. Podemos poner una cuenta a realizar
+en el prompt y R nos devolverá el resultado. Por ejemplo, podemos poner:
+
+```{r suma}
+2 + 2
+```
+
+Prueben escribirlo en su consola justo después del ">".
+
+También es posible guardar los resultados en un objeto:
+
+```{r}
+x <- 2 + 2
+```
+
+Prueben hacerlo en su consola.
+En este caso, parece que no pasó nada. No apareció el resultado. Pero si
+observan en panel del espacio de trabajo verán que hay un nuevo objeto
+llamado `x`.
+
+
+Probemos que pasa si escribimos su nombre en la consola.
+
