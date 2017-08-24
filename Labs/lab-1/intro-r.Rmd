@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Laboratorio 1 - Introducción a R y RStudio"
 output:
   html_document:
@@ -34,14 +34,14 @@ en los laboratorios exploren por su cuenta que se puede hacer; así aprenderán
 mejor. Antes de llegar a este punto es necesario que tenga cierta fluidez y 
 conceptos básicos. Este es el objetivo de este laboratorio.
 
-Para empezar, deberán loguearse en RStudio. [agregar link]
+Para empezar, deberán loguearse en RStudio. [rstudio.untdf.edu.ar][rstudio.untdf.edu.ar]
 
-[agregar screenshot]
+![Pantalla de RStudio](../lab-0/fig/rstudio.png)
 
 La interfaz de RStudio está dividida en varios paneles, y cada uno tiene
 varias pestañas. Arriba a la derecha está el *espacio de trabajo*
 (*Environment*), es donde van a aparecer los objetos que creen a medida
-que trabajan en R. La otra pestaña es el *historial* (*History* ), 
+que trabajan en R. La otra pestaña es el *historial* (*History*), 
 donde quedan guardados todos los comandos que hayan ejecutado. Abajo de
 estos dos hay un panel con varias pestañas. *Archivos* (*Files*), muestra
 los archivos. *Gráficos* (*Plots*) es donde van a aparecer los gráficos
@@ -86,7 +86,7 @@ Vamos a bajar una planilla de modelo de cómo hacer el reporte de laboratorio.
 Usa el siguiente código en la consola para bajar el archivo:
 
 ```{r cargar-planilla}
-download.file("", destfile = "lab1.Rmd")
+download.file("https://git.io/lab01", destfile = "lab1.Rmd")
 ```
 
 Ahora deberías ver un archivo que se llama **lab1.Rmd** en el panel de archivos
@@ -132,7 +132,7 @@ A medida que avancemos en los laboratorios, vamos a tener que cargar los
 paquetes relevantes para que todo funcione correctamente.
 
 [consola]: En verdad cada vez que *tejemos* el documento se crea una nueva 
-sesión completamente limpia. Por eso, es que es necesario especificar todos y
+sesión completamente limpia. Por eso es que es necesario especificar todos y
 cada uno de los comandos en documento.
 
 ## Los datos: 
@@ -144,7 +144,7 @@ registró los bautismos de Londres entre 1629 y 1710.
 Para cargarlos debemos agregar esto en el documento:
 
 ```{r cargar-datos}
-source("http://www.openintro.org/stat/data/arbuthnot.R")
+load(url("https://git.io/arbuthnot.RData"))
 ```
 
 Luego podemos ejecutarlo en la consola poniendo el cursor en la línea y
@@ -377,7 +377,7 @@ mucho tipeo en el futuro.
 </div>
 
 Finalmente, además de las operaciones matemáticas como sumas y divisiones
-también sirve para realizar comparaciones mayor que, `>`, menor que, `<`, e
+también sirve para realizar comparación mayor que, `>`, menor que, `<`, e
 igual que `==`. Por ejemplo, para ver si el número de Varones es mayor que el
 de mujeres en cada arbuthnot usamos la expresión:
 
@@ -402,18 +402,17 @@ representarlos.
 
 <div id = "oyo">
 
-En la páginas anteriores, recrearon algunas de los gráficos y análisis
+En las páginas anteriores, recrearon algunas de los gráficos y análisis
 preliminar de los datos censales. Su tarea consiste en repetir estos pasos
 pero con los datos para los nacimientos en Argentina. Carguen 
 los datos con el siguiente comando:
 
 
 ```{r cargar-datos-nacimientos}
-load(url(""))
+load(url("https://git.io/nacimientos.RData"))
 ```
 
 Los datos están guardados en un data frame llamado `nacimientos`.
-The data are stored in a data frame called `present`.
 
 -   ¿Cuáles son los años incluidos en este conjunto de datos? ¿Qué dimensiones
     tiene el data frame? ¿Cuáles son los nombres de las variables (columnas)?
