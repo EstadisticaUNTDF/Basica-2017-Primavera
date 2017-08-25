@@ -34,7 +34,7 @@ en los laboratorios exploren por su cuenta que se puede hacer; así aprenderán
 mejor. Antes de llegar a este punto es necesario que tenga cierta fluidez y 
 conceptos básicos. Este es el objetivo de este laboratorio.
 
-Para empezar, deberán loguearse en RStudio. [rstudio.untdf.edu.ar][rstudio.untdf.edu.ar]
+Para empezar, deberán loguearse en RStudio: <http://rstudio.untdf.edu.ar>
 
 ![Pantalla de RStudio](../lab-0/fig/rstudio.png)
 
