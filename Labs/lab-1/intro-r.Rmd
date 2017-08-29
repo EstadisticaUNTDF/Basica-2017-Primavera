@@ -18,7 +18,6 @@ nocite: |
 knitr::opts_chunk$set(eval = FALSE)
 library(dplyr)
 library(ggplot2)
-library(skimr)
 ```
 
 El objetivo de este laboratorio es introducirlos al uso de **R** y
