@@ -338,10 +338,10 @@ que nuestro tirador no tiene manos calientes.
     esta comparación, ¿Tenes evidencias que el modelo de manos calientes se 
     ajusta al patrón de tiros de Kobe? Explica.
 
--   What concepts from the textbook are covered in this lab? What concepts, if 
-    any, are not covered in the textbook? Have you seen these concepts elsewhere,
-    e.g. class, videos, textbook, previous labs, or homework problems? Be
-    specific in your answer.
+-   ¿Qué conceptos vistos en clase fueron aplicados en este laboratorio?
+    ¿Qué conceptos, si es que los hay, no fueron vistos en clase? ¿Han visto
+    estos conceptos en otro lado, e.g. libros de texto, videos, laboratorios
+    anteriores o problemas? Sean específicos con su respuesta.
 
 </div>
 
