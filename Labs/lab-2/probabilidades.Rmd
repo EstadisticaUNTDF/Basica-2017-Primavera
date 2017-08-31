@@ -16,20 +16,20 @@ library(ggplot2)
 <div id="boxedtext">
 **Una nota sobre el espacio de trabajo:** Antes de empezar con el laboratorio,
 tomemos un momento para revisar el flujo de trabajo de nuestro R Markdown y 
-los espacioes de trabajo de R. El espacio de trabajo de la consola y el de 
+los espacios de trabajo de R. El espacio de trabajo de la consola y el de 
 nuestro documento de R Markdown no son los mismos. Por eso, si definen una
 variable en la consola y luego tratan de usarla en el documento R Markdown, 
-obtendran un error al tejer. Esto puede parecer frustrante al principio, pero
+obtendrán un error al tejer. Esto puede parecer frustrante al principio, pero
 es una característica que ayuda que a la larga. Para asegurar que el reporte es 
 totalmente reproducible, todo lo que se usa en el reporte debe ser definido en 
 reporte, y no en otro lado.
 
 Es su responsabilidad, y también un objetivo de aprendizaje importante de esta
-materia, que dominen la habilidades para crear reportes de análisis de datos
+materia, que dominen las habilidades para crear reportes de análisis de datos
 completamente reproducibles. Abajo hay algunos consejos para lograrlo:
 
-- Trabajá siempre en tu documento R Markdown y no en la consola.
-- Teje temprano y seguido, comprobá siempre que tu documento tenga todos lo que
+- Trabaja siempre en tu documento R Markdown y no en la consola.
+- Teje temprano y seguido, comprueba siempre que tu documento tenga todos lo que
   esperas que tenga.
 </div> 
 
@@ -37,7 +37,7 @@ completamente reproducibles. Abajo hay algunos consejos para lograrlo:
 
 <div id="template">
 **Tu reporte de laboratorio reproducible:** Antes de empezar descarga la 
-plantila para este laboratorio. Recuerda que todo el código y tus respuestas
+plantilla para este laboratorio. Recuerda que todo el código y tus respuestas
 van en este documento:
 
 ```{r load-template, eval = FALSE}
@@ -47,18 +47,18 @@ download.file("http://stat.duke.edu/courses/Spring16/sta101.001/rmd/lab3.Rmd", d
 
 ## Manos Calientes
 
-Se dice que los jugadores de basquet que anotan varias veces seguidas tienen
+Se dice que los jugadores de básquet que anotan varias veces seguidas tienen
 las *manos calientes*. Fans y jugadores han creído por mucho tiempo en este 
 fenómeno, que refuta la suposición de que cada tiro es independiente del otro.
 Sin embargo, un [paper de 1985](http://www.sciencedirect.com/science/article/pii/0010028585900106) de
-Gilovich, Vallone, y Tversky recolectó evidencias que contradecian esta 
+Gilovich, Vallone, y Tversky recolectó evidencias que contradecían esta 
 creencia y mostraron que los tiros sucesivos son sucesos independientes. Este
 paper comenzó una controversia que sigue hasta hoy, lo pueden comprobar 
 buscando *hot hand basketball*.
 
 No esperamos resolver esta controversia hoy. Sin embargo, en este laboratorio
 vamos a aplicar una forma de resolver preguntas como esta. Los objetivos de 
-este laboratorio son (1) penser sobre los efectos de los sucesos independientes
+este laboratorio son (1) pensar sobre los efectos de los sucesos independientes
 y dependientes, (2) aprender a simular rachas de anotaciones en R, y (3) 
 comparar las simulaciones con datos reales de forma de determinar si el
 fenómeno de manos calientes parece ser real.
@@ -66,9 +66,9 @@ fenómeno de manos calientes parece ser real.
 ## Empezando
 
 Nuestra investigación se va a enfocar en el rendimiento de un jugador: Kobe
-Bryant de los Angeles Lakers. Su rendimiento en las finales de la NBA de 2009
+Bryant de los Ángeles Lakers. Su rendimiento en las finales de la NBA de 2009
 contra Orlando Magic le ganó el título de *Most Valuable Player* (Jugador más
-valioso) y muchos espectadores comentaron que parecia tener las manos calientes.
+valioso) y muchos espectadores comentaron que parecía tener las manos calientes.
 Carguemos los archivos que necesitaremos en este laboratorio.
 
 
@@ -76,19 +76,19 @@ Carguemos los archivos que necesitaremos en este laboratorio.
 load(url("https://stat.duke.edu/~mc301/data/hot_hand.RData"))
 ```
 
-Deberías ver tu pestaña de espacion de trabajo (*Environment*)  hay dos
-nuevos objetos: `kobe_basket` y `calc_streak`:
+Deberías ver tu pestaña de espacio de trabajo (*Environment*)  hay dos
+nuevos objetos: `kobe_basket` y `calc_racha`:
 
 - `kobe_basket`: un data frame de 133 observaciones y 6 variables, donde cada
 fila muestra un tiro hecho por Kobe Bryant. La variable `shot` en este dataset
 indica si el tiro fue un éxito (`H`) o un fracaso (`M`)
-- `calc_streak`: una función a medida que vamos a usar para calcular la longitud
+- `calc_racha`: una función a medida que vamos a usar para calcular la longitud
 de las rachas (más adelante).
 
 Solo viendo a los datos de éxitos y fracasos puede ser difícil juzgar si Kobe
 tenía una mano caliente o no. Una forma de investigar esto es considerando la 
 creencia de que los tiradores con manos calientes tienden a tener rachas de 
-anotaciones. Para este laboratorio, vamos a definir la longitud de un racha
+anotaciones. Para este laboratorio, vamos a definir la longitud de una racha
 de encestadas como *el número de anotaciones consecutivas hasta que un fallo 
 ocurre*.
 
@@ -97,15 +97,15 @@ y fracasos de sus nueve tiros en el primer cuarto:
 
 \[ \textrm{H M | M | H H M | M | M | M} \]
 
-Pueden verificarlo viendo las primeras 8 filas de los datos en el vizualizador
+Pueden verificarlo viendo las primeras 8 filas de los datos en el visualizador
 de datos.
 
-Dentro de esos nueve intentos de encestar, hay seis rachcas, que están 
+Dentro de esos nueve intentos de encestar, hay seis rachas, que están 
 separadas por "|" arriba. Sus longitudes son uno, cero, dos, cero, cero, cero 
 (en orden de ocurrencia).
 
 1. ¿Qué significa una racha de longitud 1?, i.e ¿Cuántos éxitos y fracasos hay
-una racha de 1? ¿Cuántos en un racha de longitud 0?
+una racha de 1? ¿Cuántos en una racha de longitud 0?
 
 Contar la longitud de las rachas manualmente para los 133 tiros seria tedioso,
 entonces vamos a usar una función a medida `calc_racha` para calcularlas, y
@@ -117,16 +117,15 @@ kobe_racha <- calc_racha(kobe_basket$shot)
 ```
 
 Podemos visualizar la distribución de las longitudes de rachas.
-We can then take a look at the distribution of these streak lengths.
 
 ```{r plot-streak-kobe}
 ggplot(data = kobe_racha, aes(x = longitud)) +
          geom_histogram(binwidth = 1)
 ```
 
-2.  Describe la distrubución de las rachas de Kobe en las finales de 2009 de la
+2.  Describe la distribución de las rachas de Kobe en las finales de 2009 de la
     NBA ¿Cuál es la longitud típica de la rachas? ¿Cuál fue su racha más
-    larga? Asegurate de incluir el gráfico en tu respuesta.
+    larga? Asegúrate de incluir el gráfico en tu respuesta.
 
 
 ## ¿Comparado con qué?
@@ -135,15 +134,15 @@ Hemos mostrado que Kobe tuvo algunas rachas largas ¿Pero son lo suficientemente
 largas para apoyar la creencia de que tenía manos calientes? ¿Con las podemos
 comparar?
 
-Para responder estas preguntas volvamos a a la idea de *independencia*. Dos 
+Para responder estas preguntas volvamos a la idea de *independencia*. Dos 
 eventos son independientes si el resultado de uno no afecta el resultado del
 otro. Si los tiros que hace un jugador es un evento independiente, haber 
 acertado o errado el primer tiro no afectará la probabilidad de que el segundo
 tiro sea acertado o errado.
 
-Un tiraror con manos calientes tendrá tiros que no *son* independiente uno de 
-otro. Especificamente, si un jugador acierta su primer disparo, el modelo de 
-manos calientes dice que tendrá un probabilidad *mayor* de acertar su segundo
+Un tirador con manos calientes tendrá tiros que no *son* independiente uno de 
+otro. Específicamente, si un jugador acierta su primer disparo, el modelo de 
+manos calientes dice que tendrá una probabilidad *mayor* de acertar su segundo
 disparo.
 
 Supongamos por un momento que el modelo de manos calientes es válido para Kobe.
@@ -161,7 +160,7 @@ the probability that he makes his second shot would go up to, let's say, 60%,
 
 \[ P(\textrm{tiro 2 = E} \, | \, \textrm{tiro 1 = E}) = 0.60 \]
 
-Como resultado de esta probabilidades aumentadas, espeararíamos que Kobe tubiese
+Como resultado de estas probabilidades aumentadas, esperaríamos que Kobe tuviese
 rachas más largas. Comparando esto con la perspectiva escéptica donde Kobe
 *no* tiene manos calientes, cada tiro es independiente del anterior. Si 
 convierte su primer tiro, la probabilidad de que convierta el segundo todavía
@@ -174,7 +173,7 @@ probabilidad de convierta el segundo. Si los tiros de Kobe son independientes,
 entonces la probabilidad de encestar cada tiro sería la misma sin importar sus
 tiros pasados: 45%
 
-Ahora que hemos descripto la situación en términos de tiros independietes, 
+Ahora que hemos descripto la situación en términos de tiros independientes, 
 volvamos al meollo de la cuestión: ¿Cómo podemos saber si las rachas de tiros
 de Kobe son lo suficientemente largas para indicar que tiene manos calientes? 
 Podemos comparar sus rachas con alguien que no tenga manos calientes: un
@@ -184,7 +183,7 @@ tirador independiente.
 
 Aunque no tenemos datos de ningún jugador que sepamos que tenga tiros 
 independientes, ese tipo de datos es muy fácil de simular en R. En una 
-simulación, podés poner tus reglas a un proceso aleatorio y luego que la 
+simulación, podes poner tus reglas a un proceso aleatorio y luego que la 
 computadora use números aleatorios para generar una salida que se adhiera a esas
 reglas. Como un simple ejemplo, podemos simular el lanzamiento de una moneda:
 
@@ -199,10 +198,10 @@ papelitos en el: uno dice `cara`y el otro dice `cruz`. La función `sample`
 extrae un papel del sombrero y nos dice si fue cara o cruz.
 
 Ejecuta el segundo comando varias veces. Tal como si lanzaras una moneda, a 
-veces obtenes cara y a veces obtenes cruz, pero a la larga, esperamos obtener
+veces obtienes cara y a veces obtienes cruz, pero a la larga, esperamos obtener
 un número similar de cada una.
 
-Si quisieramos simular lanzar una moneda equilibrada 100 veces, podriamos 
+Si quisiéramos simular lanzar una moneda equilibrada 100 veces, podríamos 
 correr la función 100 veces (¡qué aburrido!), o más sencillo, ajustar el 
 argumento `size`, que indica cuantas muestras sacara (el argumento 
 `replace = TRUE` indica que debemos devolver el papel al sombrero antes de volver
@@ -213,7 +212,7 @@ llamado `sim_moneda_eq`.
 sim_moneda_eq <- sample(resultados_moneda, size = 100, replace = TRUE)
 ```
 
-Para ver el resultado de la simulación, tipea el nombre del objeto y luego usa
+Para ver el resultado de la simulación, escribe el nombre del objeto y luego usa
 la función `table` para contar el número de caras y cruces.
 
 ```{r table-sim-fair-coin}
@@ -221,11 +220,11 @@ sim_moneda_eq
 table(sim_moneda_eq)
 ```
 
-Dado que solo hay dos elementos en `resultados`, la probabilidad de que lanzemos
+Dado que solo hay dos elementos en `resultados`, la probabilidad de que lancemos
 una moneda y caiga en cara es de 0.5. Digamos que estamos intentando
-simular un moneda cargada que sabemos que solo sale cara el 20% de la veces.
+simular una moneda cargada que sabemos que solo sale cara el 20% de las veces.
 Podemos ajustar esto añadiendo un argumento llamado `prob`, que contiene un
-vector con las pesos de las probabilidades.
+vector con los pesos de las probabilidades.
 
 ```{r sim-unfair-coin}
 sim_moneda_cargada <- sample(resultados_moneda, size = 100, replace = TRUE, 
@@ -243,7 +242,7 @@ papel que diga "cara" es de 20% y "cruz" es de 80%
 3.  En tu simulación de lanzar una monedad cargada 100 vece ¿Cuántas veces
     apareció cara? Incluye el código para muestrear una moneda cargada en tu
     respuesta. Dado que el archivo de markdown va a correr el código, y generar
-    una nueva muestra cada vez que lo *Tejas*, tamibén deberías "configurar una
+    una nueva muestra cada vez que lo *Tejas*, también deberías "configurar una
     semilla" **antes** de muestrear. Lee más sobre configurar una semilla abajo.
 
 <div id="boxedtext">
@@ -264,11 +263,11 @@ los muestreos en el ejercicio de arriba.
 </div>
 
 En un sentido, hemos achicado el tamaño del papelito que dice "cara", haciendo
-menos probable que sea extraido y hemos incrementado la probabilidad del papel
-que dice "cara", haciendo más probable que sea extraido. Cuando simulamos la 
-moneda equilibrada, los dos papelitos tenian el mismo tamaño. Esto sucede por
+menos probable que sea extraído y hemos incrementado la probabilidad del papel
+que dice "cara", haciendo más probable que sea extraído. Cuando simulamos la 
+moneda equilibrada, los dos papelitos tenían el mismo tamaño. Esto sucede por
 defecto si no proporcionamos un argumento `prob; todos los elementos en el 
-vector `outcomes` tienen la misma probabilidad de ser extraídos.
+vector `resultados` tienen la misma probabilidad de ser extraídos.
 
 Si querés aprender más de la función `sample` u otras funciones, recuerda que 
 podes revisar su ayuda.
@@ -279,9 +278,9 @@ podes revisar su ayuda.
 
 ## Simulando el Tirador Independiente
 
-Simular un jugador de báquet que dispara independientemente usa el mismo
+Simular un jugador de básquet que dispara independientemente usa el mismo
 mecanismo que usamos para simular el lanzamiento de una moneda. Para simular
-un solo tiro de un tirador independente con un porcentaje de tiro de 50% escribe:
+un solo tiro de un tirador independiente con un porcentaje de tiro de 50% escribe:
 
 ```{r sim-basket}
 resultados_tiro <- c("E", "F")
@@ -299,7 +298,7 @@ intentados.
 
 Nota que has nombrado el nuevo vector `sim_basquet`, el mismo nombre que le
 dimos al vector anterior reflejando un porcentaje de tiro de 50%. En esta 
-situación, R sobreescribe el viejo objeto con el nuevo, así que asegurarte que 
+situación, R sobrescribe el viejo objeto con el nuevo, así que asegurarte que 
 no necesitas información del viejo vector antes de reasignar su nombre.
 
 Con los resultados guardados como `sim_basquet`, tenemos los datos necesarios
@@ -319,24 +318,24 @@ que nuestro tirador no tiene manos calientes.
 ### Comparando Kobe Bryant con un Tirador Independiente
 
 -   Usando `calc_racha`, calculen la longitud de las rachas de `sim_basket`, y
-    y guarden los resultados en un data frame llamaod `sim_racha`. Noten que 
-    dado que el obejto `sim_racha` es un vector y no una variable en un data
-    frame no necestiamos primero seleccionar primero el data frame como hicimos
+    y guarden los resultados en un data frame llamado `sim_racha`. Noten que 
+    dado que el objeto `sim_racha` es un vector y no una variable en un data
+    frame no necesitamos primero seleccionar primero el data frame como hicimos
     antes cuando calculamos la longitud de las rachas para los tiros de Kobe.
 
 -   Describe la distribución de la longitud de rachas ¿Cuál es la longitud 
     típica de rachas para el tirador independiente simulado con un porcentaje
-    de tiro de 45%? ¿De cuanto es la racha más larga? Asegúrate de incluir un
+    de tiro de 45%? ¿De cuánto es la racha más larga? Asegúrate de incluir un
     gráfico en tu respuesta.
 
 -   Si fueses a correr la simulación del tirador independiente una segunda vez,
-    ¿Cómo esperarías que su distrución de rachas se compare con la distribución
+    ¿Cómo esperarías que su destrucción de rachas se compare con la distribución
     de la pregunta de arriba? ¿Exactamente iguales? ¿Parecidas? ¿O totalmente
     diferentes? Explica tu razonamiento.
 
 -   ¿Cómo se compara la distribución de longitudes de rachas de Kobe Bryant con
     con la distribución de longitudes de rachas para el tirador simulado? Usando
-    esta comparación, ¿Tenés evidencias que el modelo de manos calientes se 
+    esta comparación, ¿Tenes evidencias que el modelo de manos calientes se 
     ajusta al patrón de tiros de Kobe? Explica.
 
 -   What concepts from the textbook are covered in this lab? What concepts, if 
