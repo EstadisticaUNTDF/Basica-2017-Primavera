@@ -22,7 +22,7 @@ library("ggplot2")
 
 #### Cargar los datos:
 ```{r}
-load(url("https://stat.duke.edu/~mc301/data/hot_hand.RData"))
+load(url("https://git.io/manos_calientes"))
 ```
 
 ## Ejercicios:

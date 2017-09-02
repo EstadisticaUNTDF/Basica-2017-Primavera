@@ -41,7 +41,7 @@ plantilla para este laboratorio. Recuerda que todo el código y tus respuestas
 van en este documento:
 
 ```{r load-template, eval = FALSE}
-download.file("http://stat.duke.edu/courses/Spring16/sta101.001/rmd/lab3.Rmd", destfile = "lab3.Rmd")
+download.file(https://git.io/lab2", destfile = "lab2.Rmd")
 ```
 </div>
 
@@ -73,7 +73,7 @@ Carguemos los archivos que necesitaremos en este laboratorio.
 
 
 ```{r load-data}
-load(url("https://stat.duke.edu/~mc301/data/hot_hand.RData"))
+load(url("https://git.io/manos_calientes"))
 ```
 
 Deberías ver tu pestaña de espacio de trabajo (*Environment*)  hay dos
@@ -81,7 +81,7 @@ nuevos objetos: `kobe_basket` y `calc_racha`:
 
 - `kobe_basket`: un data frame de 133 observaciones y 6 variables, donde cada
 fila muestra un tiro hecho por Kobe Bryant. La variable `shot` en este dataset
-indica si el tiro fue un éxito (`H`) o un fracaso (`M`)
+indica si el tiro fue un éxito (`E`) o un fracaso (`F`)
 - `calc_racha`: una función a medida que vamos a usar para calcular la longitud
 de las rachas (más adelante).
 
@@ -95,7 +95,7 @@ ocurre*.
 Por ejemplo, en el juego 1 Kobe tuvo la siguiente secuencia de éxitos 
 y fracasos de sus nueve tiros en el primer cuarto:
 
-\[ \textrm{H M | M | H H M | M | M | M} \]
+\[ \textrm{E F | F | E E F | F | F | F} \]
 
 Pueden verificarlo viendo las primeras 8 filas de los datos en el visualizador
 de datos.
@@ -155,8 +155,7 @@ de tiros) es cerca del 45%, o en notación de probabilidad:
 Si logra su primer tiro y tiene manos calientes (los tiros *no* son
 independientes), entonces la probabilidad de que convierta su segundo tiro 
 aumentaría, digamos 60%:
-If he makes the first shot and has a hot hand (*not* independent shots), then 
-the probability that he makes his second shot would go up to, let's say, 60%,
+
 
 \[ P(\textrm{tiro 2 = E} \, | \, \textrm{tiro 1 = E}) = 0.60 \]
 
@@ -262,7 +261,7 @@ importante es que uses una semilla solo una vez. Recuerda hacerlo **antes** de
 los muestreos en el ejercicio de arriba.
 </div>
 
-En un sentido, hemos achicado el tamaño del papelito que dice "cara", haciendo
+En un sentido, hemos dismuido el tamaño del papelito que dice "cara", haciendo
 menos probable que sea extraído y hemos incrementado la probabilidad del papel
 que dice "cara", haciendo más probable que sea extraído. Cuando simulamos la 
 moneda equilibrada, los dos papelitos tenían el mismo tamaño. Esto sucede por
@@ -278,7 +277,7 @@ podes revisar su ayuda.
 
 ## Simulando el Tirador Independiente
 
-Simular un jugador de básquet que dispara independientemente usa el mismo
+Simular un jugador de básquet que tira independientemente usa el mismo
 mecanismo que usamos para simular el lanzamiento de una moneda. Para simular
 un solo tiro de un tirador independiente con un porcentaje de tiro de 50% escribe:
 
@@ -329,7 +328,7 @@ que nuestro tirador no tiene manos calientes.
     gráfico en tu respuesta.
 
 -   Si fueses a correr la simulación del tirador independiente una segunda vez,
-    ¿Cómo esperarías que su destrucción de rachas se compare con la distribución
+    ¿Cómo esperarías que su distribución de rachas se compare con la distribución
     de la pregunta de arriba? ¿Exactamente iguales? ¿Parecidas? ¿O totalmente
     diferentes? Explica tu razonamiento.
 
@@ -348,8 +347,8 @@ que nuestro tirador no tiene manos calientes.
 <div id="license">
 Este producto está licenciado bajo
 [Creative Commons Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0). 
-Este laboratorio fue adaptado para EBCN del laboratorio realizado por Andrew 
-Bray y Mine &Ccedil;etinkaya-Rundel basado en un laboratorio escrito por Mark
-Hansen de UCLA Statistics.
+Este laboratorio fue adaptado por Luciano Selzer para EBCN del laboratorio
+realizado para OpenIntro por Andrew Bray y Mine &Ccedil;etinkaya-Rundel basado en un 
+laboratorio escrito por Mark Hansen de UCLA Statistics.
 </div>
 
