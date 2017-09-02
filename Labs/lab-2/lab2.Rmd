@@ -1,0 +1,103 @@
+---
+title: "Informe Laboratorio 1"
+author: "Nombre del Equipo"
+date: "Fecha del labotorio"
+output: 
+  html_document:
+    fig_height:
+    highlight: tango
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+# NO CAMBIAR EL BlOQUE
+knitr::opts_chunk$set(echo = TRUE)
+library("dplyr")
+library("ggplot2")
+```
+
+***
+
+## Informe de Laboratorio
+
+#### Cargar los datos:
+```{r}
+load(url("https://stat.duke.edu/~mc301/data/hot_hand.RData"))
+```
+
+## Ejercicios:
+
+#### Ejercicios 1: 
+
+
+
+#### Ejercicios 2: 
+
+
+```{r ej2}
+
+```
+
+
+#### Ejercicios 3: 
+
+
+```{r ej3}
+
+```
+
+
+#### Ejercicios 4: 
+
+
+```{r ej4}
+
+```
+
+
+* * *
+
+## Por su cuenta:
+
+#### 1: 
+
+
+```{r solos1}
+
+```
+
+
+#### 2: 
+
+
+```{r solos2}
+
+```
+
+
+#### 3: 
+
+
+#### 4: 
+
+
+#### 5:
+
+
+* * *
+
+## Infome de trabajo en equipo
+
+<!--
+Para cada miembro del equipo, escriba su nombre, si estuvo o presente en la
+sesión de laboratorio, si fue autor en esta semana y su contribución al 
+laboratorio (como porcentaje). Los porcentajes deben sumar 100.
+-->
+
+| Miembro del equipo      | Presente  | Autor   | Contribución % |
+|:------------------------|:---------:|:-------:|---------------:|
+| Nombre de miembro 1     | Sí / No   | Sí / No | 25%            |
+| Nombre de miembro 2     | Sí / No   | Sí / No | 25%            |
+| Nombre de miembro 3     | Sí / No   | Sí / No | 25%            |
+| Nombre de miembro 4     | Sí / No   | Sí / No | 25%            |
+| Total                   |           |         | 100%           |
