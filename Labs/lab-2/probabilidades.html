@@ -160,7 +160,7 @@ $(document).ready(function () {
 <hr />
 <div id="template">
 <p><strong>Tu reporte de laboratorio reproducible:</strong> Antes de empezar descarga la plantilla para este laboratorio. Recuerda que todo el código y tus respuestas van en este documento:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download.file</span>(<span class="st">&quot;http://stat.duke.edu/courses/Spring16/sta101.001/rmd/lab3.Rmd&quot;</span>, <span class="dt">destfile =</span> <span class="st">&quot;lab3.Rmd&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download.file</span>(<span class="st">&quot;https://git.io/lab2&quot;</span>, <span class="dt">destfile =</span> <span class="st">&quot;lab2.Rmd&quot;</span>)</code></pre></div>
 </div>
 <div id="manos-calientes" class="section level2">
 <h2>Manos Calientes</h2>
@@ -170,15 +170,15 @@ $(document).ready(function () {
 <div id="empezando" class="section level2">
 <h2>Empezando</h2>
 <p>Nuestra investigación se va a enfocar en el rendimiento de un jugador: Kobe Bryant de los Ángeles Lakers. Su rendimiento en las finales de la NBA de 2009 contra Orlando Magic le ganó el título de <em>Most Valuable Player</em> (Jugador más valioso) y muchos espectadores comentaron que parecía tener las manos calientes. Carguemos los archivos que necesitaremos en este laboratorio.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">load</span>(<span class="kw">url</span>(<span class="st">&quot;https://stat.duke.edu/~mc301/data/hot_hand.RData&quot;</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">load</span>(<span class="kw">url</span>(<span class="st">&quot;https://git.io/manos_calientes&quot;</span>))</code></pre></div>
 <p>Deberías ver tu pestaña de espacio de trabajo (<em>Environment</em>) hay dos nuevos objetos: <code>kobe_basket</code> y <code>calc_racha</code>:</p>
 <ul>
-<li><code>kobe_basket</code>: un data frame de 133 observaciones y 6 variables, donde cada fila muestra un tiro hecho por Kobe Bryant. La variable <code>shot</code> en este dataset indica si el tiro fue un éxito (<code>H</code>) o un fracaso (<code>M</code>)</li>
+<li><code>kobe_basket</code>: un data frame de 133 observaciones y 6 variables, donde cada fila muestra un tiro hecho por Kobe Bryant. La variable <code>shot</code> en este dataset indica si el tiro fue un éxito (<code>E</code>) o un fracaso (<code>F</code>)</li>
 <li><code>calc_racha</code>: una función a medida que vamos a usar para calcular la longitud de las rachas (más adelante).</li>
 </ul>
 <p>Solo viendo a los datos de éxitos y fracasos puede ser difícil juzgar si Kobe tenía una mano caliente o no. Una forma de investigar esto es considerando la creencia de que los tiradores con manos calientes tienden a tener rachas de anotaciones. Para este laboratorio, vamos a definir la longitud de una racha de encestadas como <em>el número de anotaciones consecutivas hasta que un fallo ocurre</em>.</p>
 <p>Por ejemplo, en el juego 1 Kobe tuvo la siguiente secuencia de éxitos y fracasos de sus nueve tiros en el primer cuarto:</p>
-<p><span class="math display">\[ \textrm{H M | M | H H M | M | M | M} \]</span></p>
+<p><span class="math display">\[ \textrm{E F | F | E E F | F | F | F} \]</span></p>
 <p>Pueden verificarlo viendo las primeras 8 filas de los datos en el visualizador de datos.</p>
 <p>Dentro de esos nueve intentos de encestar, hay seis rachas, que están separadas por “|” arriba. Sus longitudes son uno, cero, dos, cero, cero, cero (en orden de ocurrencia).</p>
 <ol style="list-style-type: decimal">
@@ -200,7 +200,7 @@ $(document).ready(function () {
 <p>Un tirador con manos calientes tendrá tiros que no <em>son</em> independiente uno de otro. Específicamente, si un jugador acierta su primer disparo, el modelo de manos calientes dice que tendrá una probabilidad <em>mayor</em> de acertar su segundo disparo.</p>
 <p>Supongamos por un momento que el modelo de manos calientes es válido para Kobe. Durante su carrera, el porcentaje de tiempo que Kobe encesta (i.e. su porcentaje de tiros) es cerca del 45%, o en notación de probabilidad:</p>
 <p><span class="math display">\[ P(\textrm{tiro 1 = E}) = 0.45 \]</span></p>
-<p>Si logra su primer tiro y tiene manos calientes (los tiros <em>no</em> son independientes), entonces la probabilidad de que convierta su segundo tiro aumentaría, digamos 60%: If he makes the first shot and has a hot hand (<em>not</em> independent shots), then the probability that he makes his second shot would go up to, let’s say, 60%,</p>
+<p>Si logra su primer tiro y tiene manos calientes (los tiros <em>no</em> son independientes), entonces la probabilidad de que convierta su segundo tiro aumentaría, digamos 60%:</p>
 <p><span class="math display">\[ P(\textrm{tiro 2 = E} \, | \, \textrm{tiro 1 = E}) = 0.60 \]</span></p>
 <p>Como resultado de estas probabilidades aumentadas, esperaríamos que Kobe tuviese rachas más largas. Comparando esto con la perspectiva escéptica donde Kobe <em>no</em> tiene manos calientes, cada tiro es independiente del anterior. Si convierte su primer tiro, la probabilidad de que convierta el segundo todavía es 0.45</p>
 <p><span class="math display">\[ P(\textrm{tiro 2 = E} \, | \, \textrm{tiro 1 = E}) = 0.45 \]</span></p>
@@ -231,13 +231,13 @@ $(document).ready(function () {
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">9102015</span>)                 <span class="co"># asegurarte de cambiar el número</span></code></pre></div>
 <p>El número de arriba es completamente arbitrario. Si necesitas inspiración, podés usar tu DNI, cumpleaños, o alguna secuencia completamente aleatoria. Lo importante es que uses una semilla solo una vez. Recuerda hacerlo <strong>antes</strong> de los muestreos en el ejercicio de arriba.</p>
 </div>
-<p>En un sentido, hemos achicado el tamaño del papelito que dice “cara”, haciendo menos probable que sea extraído y hemos incrementado la probabilidad del papel que dice “cara”, haciendo más probable que sea extraído. Cuando simulamos la moneda equilibrada, los dos papelitos tenían el mismo tamaño. Esto sucede por defecto si no proporcionamos un argumento <code>prob; todos los elementos en el  vector</code>resultados` tienen la misma probabilidad de ser extraídos.</p>
+<p>En un sentido, hemos dismuido el tamaño del papelito que dice “cara”, haciendo menos probable que sea extraído y hemos incrementado la probabilidad del papel que dice “cara”, haciendo más probable que sea extraído. Cuando simulamos la moneda equilibrada, los dos papelitos tenían el mismo tamaño. Esto sucede por defecto si no proporcionamos un argumento <code>prob; todos los elementos en el  vector</code>resultados` tienen la misma probabilidad de ser extraídos.</p>
 <p>Si querés aprender más de la función <code>sample</code> u otras funciones, recuerda que podes revisar su ayuda.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">?sample</code></pre></div>
 </div>
 <div id="simulando-el-tirador-independiente" class="section level2">
 <h2>Simulando el Tirador Independiente</h2>
-<p>Simular un jugador de básquet que dispara independientemente usa el mismo mecanismo que usamos para simular el lanzamiento de una moneda. Para simular un solo tiro de un tirador independiente con un porcentaje de tiro de 50% escribe:</p>
+<p>Simular un jugador de básquet que tira independientemente usa el mismo mecanismo que usamos para simular el lanzamiento de una moneda. Para simular un solo tiro de un tirador independiente con un porcentaje de tiro de 50% escribe:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resultados_tiro &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;E&quot;</span>, <span class="st">&quot;F&quot;</span>)
 sim_baquet &lt;-<span class="st"> </span><span class="kw">sample</span>(resultados_tiro, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>Para hacer una comparación válida entre Kobe y nuestro tirador independiente simulado debemos alinear tanto su porcentaje de tiro y el número de tiros intentados.</p>
@@ -254,13 +254,13 @@ sim_baquet &lt;-<span class="st"> </span><span class="kw">sample</span>(resultad
 <ul>
 <li><p>Usando <code>calc_racha</code>, calculen la longitud de las rachas de <code>sim_basket</code>, y y guarden los resultados en un data frame llamado <code>sim_racha</code>. Noten que dado que el objeto <code>sim_racha</code> es un vector y no una variable en un data frame no necesitamos primero seleccionar primero el data frame como hicimos antes cuando calculamos la longitud de las rachas para los tiros de Kobe.</p></li>
 <li><p>Describe la distribución de la longitud de rachas ¿Cuál es la longitud típica de rachas para el tirador independiente simulado con un porcentaje de tiro de 45%? ¿De cuánto es la racha más larga? Asegúrate de incluir un gráfico en tu respuesta.</p></li>
-<li><p>Si fueses a correr la simulación del tirador independiente una segunda vez, ¿Cómo esperarías que su destrucción de rachas se compare con la distribución de la pregunta de arriba? ¿Exactamente iguales? ¿Parecidas? ¿O totalmente diferentes? Explica tu razonamiento.</p></li>
+<li><p>Si fueses a correr la simulación del tirador independiente una segunda vez, ¿Cómo esperarías que su distribución de rachas se compare con la distribución de la pregunta de arriba? ¿Exactamente iguales? ¿Parecidas? ¿O totalmente diferentes? Explica tu razonamiento.</p></li>
 <li><p>¿Cómo se compara la distribución de longitudes de rachas de Kobe Bryant con con la distribución de longitudes de rachas para el tirador simulado? Usando esta comparación, ¿Tenes evidencias que el modelo de manos calientes se ajusta al patrón de tiros de Kobe? Explica.</p></li>
 <li><p>¿Qué conceptos vistos en clase fueron aplicados en este laboratorio? ¿Qué conceptos, si es que los hay, no fueron vistos en clase? ¿Han visto estos conceptos en otro lado, e.g. libros de texto, videos, laboratorios anteriores o problemas? Sean específicos con su respuesta.</p></li>
 </ul>
 </div>
 <div id="license">
-<p>Este producto está licenciado bajo <a href="http://creativecommons.org/licenses/by-sa/3.0">Creative Commons Attribution-ShareAlike 3.0 Unported</a>. Este laboratorio fue adaptado para EBCN del laboratorio realizado por Andrew Bray y Mine Çetinkaya-Rundel basado en un laboratorio escrito por Mark Hansen de UCLA Statistics.</p>
+<p>Este producto está licenciado bajo <a href="http://creativecommons.org/licenses/by-sa/3.0">Creative Commons Attribution-ShareAlike 3.0 Unported</a>. Este laboratorio fue adaptado por Luciano Selzer para EBCN del laboratorio realizado para OpenIntro por Andrew Bray y Mine Çetinkaya-Rundel basado en un laboratorio escrito por Mark Hansen de UCLA Statistics.</p>
 </div>
 </div>
 

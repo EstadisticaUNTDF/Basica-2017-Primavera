@@ -41,7 +41,7 @@ plantilla para este laboratorio. Recuerda que todo el código y tus respuestas
 van en este documento:
 
 ```{r load-template, eval = FALSE}
-download.file(https://git.io/lab2", destfile = "lab2.Rmd")
+download.file("https://git.io/lab2", destfile = "lab2.Rmd")
 ```
 </div>
 
@@ -105,7 +105,7 @@ separadas por "|" arriba. Sus longitudes son uno, cero, dos, cero, cero, cero
 (en orden de ocurrencia).
 
 1. ¿Qué significa una racha de longitud 1?, i.e ¿Cuántos éxitos y fracasos hay
-una racha de 1? ¿Cuántos en una racha de longitud 0?
+en una racha de 1? ¿Cuántos en una racha de longitud 0?
 
 Contar la longitud de las rachas manualmente para los 133 tiros seria tedioso,
 entonces vamos a usar una función a medida `calc_racha` para calcularlas, y

@@ -4,7 +4,7 @@ author: "Nombre del Equipo"
 date: "Fecha del labotorio"
 output: 
   html_document:
-    fig_height:
+    fig_height: 4
     highlight: tango
     theme: spacelab
 ---
