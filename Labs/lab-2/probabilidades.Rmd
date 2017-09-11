@@ -238,7 +238,7 @@ como "cruz". Por lo tanto, en cada extracción, la probabilidad de sacar una
 papel que diga "cara" es de 20% y "cruz" es de 80%
 
 
-3.  En tu simulación de lanzar una monedad cargada 100 vece ¿Cuántas veces
+3.  En tu simulación de lanzar una monedad cargada 100 veces ¿Cuántas veces
     apareció cara? Incluye el código para muestrear una moneda cargada en tu
     respuesta. Dado que el archivo de markdown va a correr el código, y generar
     una nueva muestra cada vez que lo *Tejas*, también deberías "configurar una
@@ -316,11 +316,12 @@ que nuestro tirador no tiene manos calientes.
 
 ### Comparando Kobe Bryant con un Tirador Independiente
 
--   Usando `calc_racha`, calculen la longitud de las rachas de `sim_basket`, y
+-   Usando `calc_racha`, calculen la longitud de las rachas de `sim_basquet`, y
     y guarden los resultados en un data frame llamado `sim_racha`. Noten que 
     dado que el objeto `sim_racha` es un vector y no una variable en un data
-    frame no necesitamos primero seleccionar primero el data frame como hicimos
-    antes cuando calculamos la longitud de las rachas para los tiros de Kobe.
+    frame, no necesitamos primero seleccionar primero el data frame y luego 
+    la variable como hicimos antes cuando calculamos la longitud de las rachas 
+    para los tiros de Kobe. Solo hay que indicar el nombre del objeto.
 
 -   Describe la distribución de la longitud de rachas ¿Cuál es la longitud 
     típica de rachas para el tirador independiente simulado con un porcentaje

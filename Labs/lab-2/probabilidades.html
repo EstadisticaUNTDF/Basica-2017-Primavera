@@ -182,7 +182,7 @@ $(document).ready(function () {
 <p>Pueden verificarlo viendo las primeras 8 filas de los datos en el visualizador de datos.</p>
 <p>Dentro de esos nueve intentos de encestar, hay seis rachas, que están separadas por “|” arriba. Sus longitudes son uno, cero, dos, cero, cero, cero (en orden de ocurrencia).</p>
 <ol style="list-style-type: decimal">
-<li>¿Qué significa una racha de longitud 1?, i.e ¿Cuántos éxitos y fracasos hay una racha de 1? ¿Cuántos en una racha de longitud 0?</li>
+<li>¿Qué significa una racha de longitud 1?, i.e ¿Cuántos éxitos y fracasos hay en una racha de 1? ¿Cuántos en una racha de longitud 0?</li>
 </ol>
 <p>Contar la longitud de las rachas manualmente para los 133 tiros seria tedioso, entonces vamos a usar una función a medida <code>calc_racha</code> para calcularlas, y guardar los resultados en un data frame llamado <code>kobe_racha</code> como la variable <code>longitud</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">kobe_racha &lt;-<span class="st"> </span><span class="kw">calc_racha</span>(kobe_basket$shot)</code></pre></div>
@@ -224,7 +224,7 @@ $(document).ready(function () {
                           <span class="dt">prob =</span> <span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.8</span>))</code></pre></div>
 <p><code>prob=c(0.2, 0.8)</code> indica que de los dos elementos en el vector <code>resultados</code> queremos seleccionar el primero, <code>cara</code>, con una probabilidad de 0.2, y el segundo, <code>cruz</code>, con una probabilidad de 0.8. Otra forma de pensarlo es imaginar un sombrero con 10 papeles, dos de los papeles están marcados como “cara” y ocho como “cruz”. Por lo tanto, en cada extracción, la probabilidad de sacar una papel que diga “cara” es de 20% y “cruz” es de 80%</p>
 <ol start="3" style="list-style-type: decimal">
-<li>En tu simulación de lanzar una monedad cargada 100 vece ¿Cuántas veces apareció cara? Incluye el código para muestrear una moneda cargada en tu respuesta. Dado que el archivo de markdown va a correr el código, y generar una nueva muestra cada vez que lo <em>Tejas</em>, también deberías “configurar una semilla” <strong>antes</strong> de muestrear. Lee más sobre configurar una semilla abajo.</li>
+<li>En tu simulación de lanzar una monedad cargada 100 veces ¿Cuántas veces apareció cara? Incluye el código para muestrear una moneda cargada en tu respuesta. Dado que el archivo de markdown va a correr el código, y generar una nueva muestra cada vez que lo <em>Tejas</em>, también deberías “configurar una semilla” <strong>antes</strong> de muestrear. Lee más sobre configurar una semilla abajo.</li>
 </ol>
 <div id="boxedtext">
 <p><strong>Una nota sobre configurar la semilla:</strong> Configurar la semilla causa que R muestree la misma muestra cada vez que tejas el documento. Esto va a asegurar que tus resultados no cambien cada vez que tejas, y también va a asegurar que tu trabajo sea reproducible (al configurar la semilla es posible reproducir los resultados). Podes configurar la semilla así:</p>
@@ -252,7 +252,7 @@ sim_baquet &lt;-<span class="st"> </span><span class="kw">sample</span>(resultad
 <h2 id="por-su-cuenta">Por su cuenta</h2>
 <h3 id="comparando-kobe-bryant-con-un-tirador-independiente">Comparando Kobe Bryant con un Tirador Independiente</h3>
 <ul>
-<li><p>Usando <code>calc_racha</code>, calculen la longitud de las rachas de <code>sim_basket</code>, y y guarden los resultados en un data frame llamado <code>sim_racha</code>. Noten que dado que el objeto <code>sim_racha</code> es un vector y no una variable en un data frame no necesitamos primero seleccionar primero el data frame como hicimos antes cuando calculamos la longitud de las rachas para los tiros de Kobe.</p></li>
+<li><p>Usando <code>calc_racha</code>, calculen la longitud de las rachas de <code>sim_basquet</code>, y y guarden los resultados en un data frame llamado <code>sim_racha</code>. Noten que dado que el objeto <code>sim_racha</code> es un vector y no una variable en un data frame, no necesitamos primero seleccionar primero el data frame y luego la variable como hicimos antes cuando calculamos la longitud de las rachas para los tiros de Kobe. Solo hay que indicar el nombre del objeto.</p></li>
 <li><p>Describe la distribución de la longitud de rachas ¿Cuál es la longitud típica de rachas para el tirador independiente simulado con un porcentaje de tiro de 45%? ¿De cuánto es la racha más larga? Asegúrate de incluir un gráfico en tu respuesta.</p></li>
 <li><p>Si fueses a correr la simulación del tirador independiente una segunda vez, ¿Cómo esperarías que su distribución de rachas se compare con la distribución de la pregunta de arriba? ¿Exactamente iguales? ¿Parecidas? ¿O totalmente diferentes? Explica tu razonamiento.</p></li>
 <li><p>¿Cómo se compara la distribución de longitudes de rachas de Kobe Bryant con con la distribución de longitudes de rachas para el tirador simulado? Usando esta comparación, ¿Tenes evidencias que el modelo de manos calientes se ajusta al patrón de tiros de Kobe? Explica.</p></li>
