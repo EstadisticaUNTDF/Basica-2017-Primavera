@@ -1,0 +1,12 @@
+name: muestreando-dist
+title: muestreando-dist
+username:
+account: lselzer
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 214155
+bundleId: 979429
+url: https://lselzer.shinyapps.io/muestreando-dist/
+when: 1505274471.61771
+asMultiple: FALSE
+asStatic: FALSE

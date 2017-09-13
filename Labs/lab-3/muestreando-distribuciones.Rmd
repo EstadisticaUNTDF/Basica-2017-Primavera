@@ -267,7 +267,11 @@ que el tamaño muestral tiene en nuestra distribución.
     si incrementas el número de simulaciones? (No es necesario que incluyas
     los gráficos en la respuesta)
 
-```{r shiny, echo=FALSE, eval=TRUE}
+<iframe src="https://lselzer.shinyapps.io/muestreando-dist/" width="800" height="500">
+  <p>Your browser does not support iframes.</p>
+</iframe>
+
+```{r shiny, echo=FALSE, eval=FALSE}
 shinyApp(
   ui <- fluidPage(
     
