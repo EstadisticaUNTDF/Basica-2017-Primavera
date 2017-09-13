@@ -63,8 +63,8 @@ shinyApp(
     
     # plot sampling distribution
     output$sampling_plot <- renderPlot({
-      x_min <- quantile(ames[[input$selected_var]], 0.1)
-      x_max <- quantile(ames[[input$selected_var]], 0.9)
+      x_min <- quantile(ames[[input$selected_var]], 0.1, names = FALSE)
+      x_max <- quantile(ames[[input$selected_var]], 0.9, names = FALSE)
       
       ggplot(sampling_dist(), aes(x = x_bar)) +
         geom_histogram(binwidth = 30) +
