@@ -1,0 +1,394 @@
+---
+title: "Bases para la inferencia estadística: Muestreando distribuciones"
+runtime: shiny
+output:
+  html_document:
+    css: www/lab.css
+    highlight: pygments
+    theme: cerulean
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+library(dplyr)
+library(ggplot2)
+library(mosaic)
+load("ames.RData")
+```
+
+<div id="template">
+**Tu reporte de laboratorio reproducible:** Antes de empezar descarga la 
+plantilla para este laboratorio. Recuerda que todo el código y tus respuestas
+van en este documento:
+
+```{r load-template, eval = FALSE}
+download.file("https://git.io/lab3", destfile = "lab3.Rmd")
+```
+</div>
+
+En este laboratorio vamos a investigar las maneras en los cuales los estadísticos
+de una muestra aleatoria de datos puede servir como estimadores puntales de 
+los parámetros poblacionales. Estamos interesados en formular una *distribución
+muestral* de nuestro estimador para conocer las propiedades del estimado, tales
+como su distribución.
+
+<div id="boxedtext">
+**Configurando la semilla:** Vamos a tomar algunas muestras aleatorias y crear
+distribuciones muestrales en este laboratorio, lo que significa que deberías 
+configurar la semilla al principio del laboratorio. Si este concepto es nuevo,
+revisa el laboratorio anterior y pregunta a los docentes.
+</div>
+
+## Los datos
+
+Vamos a considerar los datos inmobiliarios de la ciudad de Ames, Iowa. Los
+detalles de cada transacción inmobiliaria de Ames es registrada por la oficina
+del Asesor de la Ciudad. En particular, nuestro foco para este laboratorio será
+todas las ventas de hogares residenciales en Ames entre 2006 y 2010. Esta
+colección representa nuestra población de interés. En este laboratorio nos 
+gustaría aprender sobre estas ventas de hogares tomando muestras más pequeñas de
+la población total. Carguemos los datos.
+
+
+
+```{r load-data}
+load(url("https://git.io/ames.RData"))
+```
+
+Vemos que hay varias variables en el conjunto de datos, suficientes como para
+hacer un análisis en profundidad. Para este laboratorio, nos vamos a restringir
+solo a dos variables: el área total sobre el suelo de la casa en pies cuadrados
+(`area`) y el precio de venta (`price`).
+
+Podemos explorar la distribución de las áreas de las casas en la población de
+ventas de casa visualmente y con estadísticos de resumen. Primero creemos una
+visualización, un histograma:
+
+```{r area-hist}
+ggplot(data = ames, aes(x = area)) +
+  geom_histogram(binwidth = 250)
+```
+
+Vamos a obtener algunas medidas de resumen. Noten que podemos hacer esto 
+usando la función `summarise`. Podemos calcular tantas medidas como queramos
+usando esta función, y solo encadenando los resultados. Algunas de las 
+funciones abajo se explican solas (`mean`, `median`, `sd`, `min`, `max`).
+`IQR` es el rango intercuartiles. Una función nueva que encontramos aquí es 
+`quantile`, la cual nos permite calculara los valores correspondientes a 
+cuantiles de la distribución. Por ejemplo, `quantile(x, 0.25)` dará el valor
+de corte para el percentil 25° (Q1) de la distribución de x. Encontrar estos
+valores es útil para describir la distribución, ya que podemos usarlos para 
+descripciones como *"la mitad de las casas tienen áreas entre tanto y tanto 
+pies cuadrados"*
+
+
+```{r area-stats}
+ames %>%
+  summarise(mu = mean(area), pop_med = median(area), 
+            sigma = sd(area), pop_iqr = IQR(area),
+            pop_min = min(area), pop_max = max(area),
+            pop_q1 = quantile(area, 0.25),  # primer cuartil, percentil 25°
+            pop_q3 = quantile(area, 0.75))  # tercer cuartil, percentil 75°
+```
+
+1.  Describe la distribución de la población usando la visualización y las
+    medidas de resumen. No hace falta usar todas las medidas de resumen en la
+    descripción, deberán decidir cuáles son relevantes basadas en la forma de 
+    la distribución. Asegúrate de incluir el gráfico y las medidas de resumen
+    en su informe además de la descripción.
+
+
+## La distribución de muestreo desconocida
+
+En este laboratorio tenemos acceso a toda la población, pero esto raramente
+sucede en la vida real. Conseguir la información de toda una población es
+extremadamente costoso o imposible. Debido a esto, normalmente tomamos una 
+muestra de la población y la usamos para entender las propiedades de la
+población.
+
+Si estuviésemos interesados en estimar la media del área en Ames basados en una
+muestra, podemos usar el siguiente comando para muestrear la población.
+
+```{r samp1}
+muestra1 <- ames %>%
+  sample_n(50)
+```
+
+Este comando recolecta una muestra aleatoria simple de tamaño 50 del conjunto de
+datos `ames`, que es asignado a `muestra1`. Esto es como ir a la base de datos del
+Asesor de la Ciudad y tomar 50 archivos al azar de las ventas de casas. Trabajar
+con esos 50 archivos es considerablemente más simple que hacerlo con todos las 
+2930 ventas de casas.
+
+1.  Describe la distribución del área de la muestra ¿Cómo se compara con la 
+    distribución de la población? **Pista:** la función `sample_n` toma una 
+    muestra aleatoria de las observaciones (i.e. filas) del conjunto de datos,
+    por lo que pueden referirse a las variables en el conjunto de datos con el 
+    mismo nombre. El código del ejercicio anterior también va a ser útil para
+    visualizar y resumir la muestra. Sin embargo, tengan cuidado de no nombrar
+    los valores `mu`y `sigma` ya que están trabajando con estadísticos 
+    muestrales, no parámetros poblacionales. Pueden modificar las etiquetas de
+    cualquiera de los estadísticos para indicar que provienen de una muestra.
+
+Si estamos interesando en estimar las medias de las áreas de las casas en 
+Ames usando las muestras, nuestra mejor suposición es la media muestral. 
+
+```{r mean-samp1}
+muestra1 %>%
+  summarise(x_bar = mean(area))
+```
+
+Dependiendo cuál de las 50 casas seleccionaron, su estimador puede estar un poco
+por encima o por debajo de la verdadera media poblacional de 1499.69 pies 
+cuadrados. En general, la media muestral resulta ser un estimador bastante bueno
+del promedio del área, y logramos obtenerlo muestreando menos del 3\% de la 
+población.
+
+1.  ¿Sería esperable que su media muestral sea igual a la media muestral de otro 
+    grupo? ¿Por qué sí o no? Si la respuesta es no ¿Esperarían que la medias
+    fueran algo diferentes o muy diferentes? Pregúntale a un grupo vecino para
+    confirmar tu respuesta.
+
+1.  Toma una segunda muestra, también de tamaño 50, y llámala `muestra2` ¿Cómo
+    se compara la media de `muestra2` con la media de `muestra1`? Supongan que 
+    tomamos más muestras, una de tamaño 100 y otra de tamaño 1000 ¿Cuál suponen
+    que le daría un estimador más exacto de la media poblacional?
+
+Sin mucha sorpresa, cada vez que tomamos otra muestra aleatoria, obtenemos una
+media muestral diferente. Es útil tener una idea de cuanta variabilidad 
+deberíamos esperar cuando estimamos la media poblacional de esta forma. La 
+distribución de las medias muestrales, llamada *distribución muestral*, nos puede
+ayudar a entender esta variabilidad. En este laboratorio, como tenemos acceso a
+la población, podemos crear una distribución muestral para la media muestral 
+repitiendo los pasos de arriba muchas veces. Aquí vamos a generar 2000 muestras
+aleatorias y calcular la medida muestral de cada una. Noten que estamos 
+muestreando con reemplazos, `replace=TRUE` dado que las distribuciones de 
+muestreo son construidas muestreando con reemplazo.
+
+```{r loop}
+medias_muestral50 <- do(2000) * ames %>% 
+                              sample_n(50, replace = TRUE) %>%
+                              summarise(x_bar = mean(area))
+
+ggplot(data = medias_muestral50, aes(x = x_bar)) +
+  geom_histogram(binwidth = 20)
+
+```
+
+Acá usamos R para tomar 2000 muestras de tamaño 50 de la población, calcular
+la media de cada muestra y guardar el resultado de cada una en un vector 
+llamado `medias_muestral50`. En la próxima sección veremos cómo funciona el 
+código.
+
+1.  ¿Cuántos elementos hay en `medias_muestral50`. Describe la distribución
+    muestral, y asegúrense de ser específicos en notar su centro. Asegúrense de
+    incluir un gráfico de la distribución en su respuesta.
+
+## Interludio: La función `do`
+
+Vamos a tomarnos un descanso de la estadística por un momento para que 
+entiendan el último bloque de código. La idea detrás de la función `do` es 
+*repetición*: te permite ejecutar una línea de código tantas veces como quieras
+y poner los resultados en un data frame. En el caso de arriba, queríamos 
+tomar muestras de aleatorias de tamaño 50 repetidas veces y luego guardar la 
+media de `area` de esa muestra en el vector `medias_muestral50`.
+
+Sin la función `do`, eso sería complicado. Primero, deberíamos crear un vector
+vacío lleno de `NA` (representa un valor no tomado) para contener las 2000
+medias muestrales. Luego, deberíamos haber calculado cada una de las 2000 medias
+muestrales una por vez, poniendo cada una individualmente en cada uno de los 
+espacios del vector `medias_muestral50`:
+
+
+```{r do-long}
+medias_muestral50 <- rep(NA, 2000)
+
+medias_muestral50[1] <-  ames %>%
+                        sample_n(50, replace = TRUE) %>%
+                        summarise(x_bar = mean(area))
+medias_muestral50[2] <- ames %>%
+                        sample_n(50, replace = TRUE) %>%
+                        summarise(x_bar = mean(area))
+medias_muestral50[3] <- ames %>%
+                        sample_n(50, replace = TRUE) %>%
+                        summarise(x_bar = mean(area))
+medias_muestral50[4] <- ames %>%
+                        sample_n(50, replace = TRUE) %>%
+                        summarise(x_bar = mean(area))
+# ... y así, 2000 veces
+```
+
+Con la función `do`, estos miles de líneas de código son comprimidas en una sola
+línea:
+
+```{r do-again}
+medias_muestral50 <- do(2000) * ames %>%
+                              sample_n(50, replace = TRUE) %>%
+                              summarise(x_bar = mean(area))
+```
+
+Noten que cada una las 2000 veces que calculamos la medias, ¡lo hicimos con una
+muestras **diferente**!
+
+1.  Para asegurarse de que entiendo como las distribuciones muestrales son
+    construidas, y saber que hacen exactamente las funciones `sample_n` y `do`,
+    intenten modificar el código para crear una distribución muestral de 
+    **25 medias muestrales** de **muestras de tamaño 10**, y poner los resultados
+    en un data frame llamado `medias_muestral_peque`. Imprime la salida ¿Cuántas
+    observaciones hay en el objeto llamado `medias_muestral_peque`? ¿Qué representa
+    cada observación?
+
+## Tamaño muestral y distribuciones muestrales
+
+Mecánicas aparte, volvamos a la razón por la que usamos la función `do`: para
+calcular la distribución muestral, específicamente esta.
+
+
+```{r hist}
+ggplot(data = medias_muestral50, aes(x = x_bar)) +
+  geom_histogram(binwidth = 20)
+```
+
+La distribución muestral que calculamos nos dice mucho acerca de estimar la 
+media del área de las casas de Ames. Dado que la media muestral es un estimador
+insesgado, la distribución muestral está centrada en la verdadera media 
+poblacional del área, y la dispersión de la distribución nos indica cuanta
+variabilidad es inducida por muestras solo 50 ventas de casas.
+
+En lo que queda de esta sección trabajaremos en obtener una idea del efecto
+que el tamaño muestral tiene en nuestra distribución.
+
+
+1.  Usen la app debajo para crear una distribución muestral de las medias de 
+    `area` de tamaños muestrales de 10, 50 y 100. Usen 5000 simulaciones ¿Qué 
+    representa cada observación de la distribución muestral? ¿Cómo cambia la
+    media, el error estándar y la forma de la distribución muestral cuando el 
+    tamaño muestral aumenta? ¿Cómo (si es que lo hacen) cambian estos valores
+    si incrementas el número de simulaciones? (No es necesario que incluyas
+    los gráficos en la respuesta)
+
+```{r shiny, echo=FALSE, eval=TRUE}
+shinyApp(
+  ui <- fluidPage(
+    
+    # Sidebar with a slider input for number of bins 
+    sidebarLayout(
+      sidebarPanel(
+        
+        selectInput("selected_var",
+                    "Variable:",
+                    choices = list("area", "price"),
+                    selected = "area"),         
+        
+        numericInput("n_samp",
+                     "Tamaño de muestra:",
+                     min = 1,
+                     max = nrow(ames),
+                     value = 30),
+        
+        numericInput("n_sim",
+                     "Número de muestras:",
+                     min = 1,
+                     max = 15000,
+                     value = 5000) 
+        
+      ),
+      
+      # Show a plot of the generated distribution
+      mainPanel(
+        plotOutput("sampling_plot"),
+        verbatimTextOutput("sampling_mean"),
+        verbatimTextOutput("sampling_se")
+      )
+    )
+  ),
+  
+  # Define server logic required to draw a histogram
+  server <- function(input, output) {
+    
+    # create sampling distribution
+    sampling_dist <- reactive({
+      ames[[input$selected_var]] %>%
+        sample(size = input$n_samp * input$n_sim, replace = TRUE) %>%
+        matrix(ncol = input$n_samp) %>%
+        rowMeans() %>%
+        data.frame(x_bar = .)
+    })
+    
+    # plot sampling distribution
+    output$sampling_plot <- renderPlot({
+      x_min <- quantile(ames[[input$selected_var]], 0.1)
+      x_max <- quantile(ames[[input$selected_var]], 0.9)
+      
+      ggplot(sampling_dist(), aes(x = x_bar)) +
+        geom_histogram(binwidth = 30) +
+        xlim(x_min, x_max) +
+        ylim(0, input$n_sim * 0.35) +
+        ggtitle(paste0("Distribución muestral de la media ", 
+                       input$selected_var, " (n = ", input$n_samp, ")")) +
+        ylab("Frecuencia") +
+        xlab(paste("Media", input$selected_var)) +
+        theme(plot.title = element_text(face = "bold", size = 16))
+    })
+    
+    # mean of sampling distribution
+    output$sampling_mean <- renderText({
+      paste0("media de la distribución muestral = ", round(mean(sampling_dist()$x_bar), 2))
+    })
+    
+    # mean of sampling distribution
+    output$sampling_se <- renderText({
+      paste0("ES de la distribución muestral = ", round(sd(sampling_dist()$x_bar), 2))
+    })
+  },
+  
+  options = list(height = 500) 
+)
+```
+
+
+***
+
+<div class="oyo">
+
+## Por su cuenta
+
+Hasta ahora solo nos hemos enfocado en estimar la media del área de las viviendas
+en Ames. Ahora vamos a tratar de estimar la media de los precios de las casas.
+
+Noten que, aunque podrían contestar algunas de las preguntas usando la app se
+espera que escriban el código requerido, produzcan los gráficos necesarios y las
+estadísticas de resumen. Pueden usar la app para explorar.
+
+-   Tomen una muestra de tamaño 15 de la población y calculen la media de `price`
+    de las casas en esta muestra. Usando esta muestra ¿Cuál es el mejor 
+    estimador puntual de la media poblacional del precio de las casas?
+    
+-   Dado que tienen acceso a toda la población, simulen la distribución muestral
+    de $\bar{x}_{price}$ tomando 2000 muestras de tamaño 15 de la población y
+    calculando las 2000 medias muestrales. Guarda estas medias en un vector
+    llamado `medias_muestral15`. Grafiquen los datos, luego describe la forma de la
+    distribución. Basados en la distribución muestral ¿Cuál suponen que sería
+    la media de los precios de las casas? Finalmente, calculen y reporten la 
+    media poblacional.
+
+-   Cambien su tamaño muestral de 15 a 150, y luego computen la distribución
+    muestral usando el mismo método que arriba, y luego guarden esas medias en
+    un nuevo vector llamado `medias_muestral150`. Describe la forma de esta 
+    distribución muestral, y compárenla con la distribución muestral para una
+    muestra de 15. Basados en esta distribución muestral ¿Cuál suponen que sería
+    la media muestral de los precios de las casas en Ames?
+
+-   De las distribuciones muestrales de 2 y 3 ¿Cuál tiene menor dispersión? Si
+    están preocupados por hacer los estimadores que estén más seguido cerca del
+    valor verdadero ¿Preferirían una distribución muestral con dispersión grande
+    o pequeña?
+
+</div>
+
+<div id="license">
+Este producto está licenciado bajo
+[Creative Commons Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0). 
+Este laboratorio fue adaptado por Luciano Selzer para EBCN del laboratorio
+realizado para OpenIntro por Andrew Bray y Mine &Ccedil;etinkaya-Rundel.
+</div>
