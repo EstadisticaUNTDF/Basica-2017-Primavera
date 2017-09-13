@@ -1,6 +1,5 @@
 ---
 title: "Bases para la inferencia estadística: Muestreando distribuciones"
-runtime: shiny
 output:
   html_document:
     css: www/lab.css

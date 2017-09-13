@@ -5,8 +5,8 @@ account: lselzer
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 214155
-bundleId: 979429
+bundleId: 979437
 url: https://lselzer.shinyapps.io/muestreando-dist/
-when: 1505274471.61771
+when: 1505274671.6731
 asMultiple: FALSE
 asStatic: FALSE
